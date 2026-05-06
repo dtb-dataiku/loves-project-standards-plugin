@@ -1,0 +1,15 @@
+{
+    "id": "loves-project-standards",
+    "version": "0.0.1",
+    "meta": {
+        "label": "Love's Travel Stops Project Standards",
+        "description": "Custom project standard checks and macro for Loves Demo.",
+        "author": "darin.brown@dataiku.com",
+        "icon": "fas fa-pencil-ruler",
+        "recipesCategory": "",
+        "tags": [], //for example: ["Machine Learning", "NLP"]
+        "url": "",
+        "licenseInfo": "Apache Software License",
+        "supportLevel": "NOT_SUPPORTED"
+    }
+}
