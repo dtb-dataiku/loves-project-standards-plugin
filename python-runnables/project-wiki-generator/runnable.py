@@ -1,7 +1,7 @@
 # This file is the actual code for the Python runnable project-wiki-generator
 import dataiku
 from dataiku.runnables import Runnable
-from dominionprojectstandards import extractor, formatter, publisher
+from lovesprojectstandards import extractor, formatter, publisher
 
 
 class MyRunnable(Runnable):
