@@ -27,9 +27,11 @@ class MyProjectStandardsCheckSpec(ProjectStandardsCheckSpec):
             Use `ProjectStandardsCheckRunResult.error(message)` if you want to mark the check as an error. You can also raise an Exception.
         """
 
-        parameter2 = self.config["parameter2"]  # use self.config to get your check config values
         project = self.project  # use self.project to access the current project
-        if len(project.get_summary()["name"]) <= parameter2:
-            return ProjectStandardsCheckRunResult.success("Project name is small. limit={0}".format(parameter2))
+        wiki = project.get_wiki()
+        num_articles = len(wiki.list_articles())
+        
+        if num_articles > 0:
+            return ProjectStandardsCheckRunResult.success(f"Wiki articles found ({num_articles} articles).")
         else:
-            return ProjectStandardsCheckRunResult.failure(3, "Project name is too long. limit={0}".format(parameter2))
+            return ProjectStandardsCheckRunResult.failure(5, "No wiki articles found.")
