@@ -1,3 +1,4 @@
+import math
 from dataiku.project_standards import (
     ProjectStandardsCheckRunResult,
     ProjectStandardsCheckSpec,
@@ -27,9 +28,22 @@ class MyProjectStandardsCheckSpec(ProjectStandardsCheckSpec):
             Use `ProjectStandardsCheckRunResult.error(message)` if you want to mark the check as an error. You can also raise an Exception.
         """
 
-        parameter2 = self.config["parameter2"]  # use self.config to get your check config values
+        required_article_names = self.config.get('required_article_names')  # use self.config to get your check config values
+        
         project = self.project  # use self.project to access the current project
-        if len(project.get_summary()["name"]) <= parameter2:
-            return ProjectStandardsCheckRunResult.success("Project name is small. limit={0}".format(parameter2))
+        wiki = project.get_wiki()
+        article_names = [article.get_data().get_name() for article in wiki.list_articles()]
+        
+        missing_article_names = []
+        for article_name in required_article_names:
+            if article_name not in article_names:
+                missing_article_names.append(article_name)
+        
+        if len(missing_article_names) == 0:
+            return ProjectStandardsCheckRunResult.success('All required wiki articles found.')
         else:
-            return ProjectStandardsCheckRunResult.failure(3, "Project name is too long. limit={0}".format(parameter2))
+            pct_missing = len(missing_article_names) / len(required_article_names)
+            severity = math.ceil(pct_missing * 5)
+            
+            missing_list = ', '.join([f"'{n}'" for n in missing_article_names])
+            return ProjectStandardsCheckRunResult.failure(severity, f"Missing wiki articles: {missing_list}")
